@@ -29,7 +29,7 @@ def create_work_order_from_sales_order(doc, method, is_from_sales_order=True):
             work_order.qty = item.qty  # Set the quantity to manufacture
             work_order.sales_order = doc.name  # Link the Work Order to the Sales Order
             work_order.company = doc.company  # Set company same as Sales Order
-            
+             
             # Set the Work Order status to Draft
             work_order.workflow_state = "Draft"  # Set state to Draft
 

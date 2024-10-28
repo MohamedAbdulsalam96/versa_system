@@ -70,12 +70,14 @@ doctype_js = {"Lead" : "public/js/lead.js","Quotation" : "public/js/quotation.js
 # ------------
 
 # before_install = "versa_system.install.before_install"
-# after_install = "versa_system.install.after_install"
+after_install = "versa_system.setup.after_install"
+
+after_migrate = "versa_system.setup.after_migrate"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "versa_system.uninstall.before_uninstall"
+before_uninstall = "versa_system.setup.before_uninstall"
 # after_uninstall = "versa_system.uninstall.after_uninstall"
 
 # Integration Setup
@@ -126,10 +128,10 @@ doctype_js = {"Lead" : "public/js/lead.js","Quotation" : "public/js/quotation.js
 
 doc_events = {
    "Sales Order": {
-       "on_submit": "versa_system.versa_system.costom.castom.create_work_order_from_sales_order"
+       "on_submit": "versa_system.versa_system.custom_scripts.work_order.create_work_order_from_sales_order"
    }
 }
-
+    
 # Scheduled Tasks
 # ---------------
 

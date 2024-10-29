@@ -6,14 +6,8 @@ class FeasibilityCheck(Document):
     def on_update(self):
         """Update lead status when the feasibility check is updated."""
         update_lead_status_on_feasibility_check(self)
-
-
 @frappe.whitelist()
 def map_feasibility_to_mockup_design(source_name, target_doc=None):
-    """
-    Map fields from Feasibility Check DocType to Mockup Design DocType,
-    including the child table 'Enquiry Details' and its data.
-    """
     def set_missing_values(source, target):
         # Set any missing values if needed
         pass
@@ -41,13 +35,7 @@ def map_feasibility_to_mockup_design(source_name, target_doc=None):
 
     return target_doc
     
-import frappe
-from frappe.model.document import Document
 
-class FeasibilityCheck(Document):
-    def on_update(self):
-        # Call the update lead status function when the document is updated
-        update_lead_status_on_feasibility_check(self)
 
 def update_lead_status_on_feasibility_check(doc):
     """Update the status of the associated lead when the feasibility check is approved or rejected."""

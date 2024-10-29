@@ -11,6 +11,7 @@ frappe.ui.form.on('Feasibility Check', {
         }
     }
 });
+
 frappe.ui.form.on('Feasibility Check', {
     after_save: function(frm) {
         // Check if the current status is 'Lead' and update to 'Interest'

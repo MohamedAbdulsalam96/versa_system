@@ -24,6 +24,14 @@ def map_mockup_design_to_quotation(source_name, target_doc=None):
                     "from_lead": "party_name"
                 },
             },
+            "Enqury Details": {  # Assuming the child table in Lead is 'lead_items'
+                "doctype": "Quotation Item",  # Actual child table DocType is 'Quotation Item'
+                "field_map": {
+                    "item": "item_name",
+                    "item": "item_code",
+                     # Map the rate if available
+                }
+            }
         }, target_doc, set_missing_values)
 
     return target_doc

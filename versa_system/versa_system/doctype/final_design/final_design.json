@@ -7,16 +7,10 @@
  "engine": "InnoDB",
  "field_order": [
   "from_lead",
-  "image_1",
+  "items",
   "quotation_details"
  ],
  "fields": [
-  {
-   "fieldname": "image_1",
-   "fieldtype": "Table",
-   "label": "Image",
-   "options": "Final"
-  },
   {
    "fieldname": "from_lead",
    "fieldtype": "Link",
@@ -26,13 +20,20 @@
   {
    "fieldname": "quotation_details",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Quotation Details",
    "options": "Quotation Item"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Final"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-10-24 11:30:40.806173",
+ "modified": "2024-10-30 11:33:42.421420",
  "modified_by": "Administrator",
  "module": "Versa System",
  "name": "Final Design",

@@ -11,7 +11,7 @@ frappe.ui.form.on("Lead", {
       }, 10);
 
       // Update buttons based on status
-      updateButtons(frm);
+      update_buttons(frm);
     }
 
     // Set query for 'item' field in the child table to show only 'Products'
@@ -47,17 +47,17 @@ frappe.ui.form.on("Lead", {
 
   status: function (frm) {
     // Update buttons when status changes
-    updateButtons(frm);
-    updateQuotationButtons(frm);
+    update_buttons(frm);
+    update_quotation_buttons(frm);
   },
 });
 
-function openReadonlyDocument(frm, doctype, filterField) {
+function open_readonly_document(frm, doctype, filter_field) {
   frappe.call({
     method: "frappe.client.get",
     args: {
       doctype: doctype,
-      filters: { [filterField]: frm.doc.name },
+      filters: { [filter_field]: frm.doc.name },
     },
     callback: function (response) {
       if (response.message) {
@@ -78,7 +78,7 @@ function openReadonlyDocument(frm, doctype, filterField) {
 }
 
 // Function to update buttons based on status
-function updateButtons(frm) {
+function update_buttons(frm) {
   // Remove existing buttons before adding new ones
   frm.remove_custom_button(__("Feasibility Check"));
   frm.remove_custom_button(__("New Opportunity"));
@@ -105,7 +105,7 @@ function updateButtons(frm) {
     frm.add_custom_button(
       __("View Feasibility Check"),
       function () {
-        openReadonlyDocument(frm, "Feasibility Check", "from_lead");
+        open_readonly_document(frm, "Feasibility Check", "from_lead");
       },
       __("Create")
     );
@@ -137,7 +137,7 @@ function updateButtons(frm) {
       frm.add_custom_button(
         __("View Quotation"),
         function () {
-          openReadonlyDocument(frm, "Quotation", "party_name");
+          open_readonly_document(frm, "Quotation", "party_name");
         },
         __("Create")
       );

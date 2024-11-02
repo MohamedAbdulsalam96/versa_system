@@ -38,31 +38,38 @@ def map_lead_to_feasibility_check(source_name, target_doc=None):
 def map_lead_to_quotation(source_name, target_doc=None):
     """
     Map fields from Lead DocType to Quotation DocType,
-    including child table 'items' mapped to 'Quotation Item'
+    including only approved rows from the 'Enquiry Details' child table.
     """
     def set_missing_values(source, target):
         target.quotation_to = "Lead"
         target.party_name = source.name
 
-    # Correct mapping with the child table and its fields
-    target_doc = get_mapped_doc("Lead", source_name,
+    def filter_approved_items(source, target, source_parent):
+        # Only map rows where the 'approve' checkbox is checked
+        if source.approve:
+            target.item_name = source.item
+            target.item_code = source.item
+
+    # Map Lead to Quotation, applying the filter to child table rows
+    target_doc = get_mapped_doc(
+        "Lead",
+        source_name,
         {
             "Lead": {
                 "doctype": "Quotation",
                 "field_map": {
-
                     "name": "party_name"  # Map the Lead name to Quotation's party_name
                 },
             },
-            "Enqury Details": {  # Assuming the child table in Lead is 'lead_items'
-                "doctype": "Quotation Item",  # Actual child table DocType is 'Quotation Item'
-                "field_map": {
-                    "item": "item_name",
-                    "item": "item_code",
-                     # Map the rate if available
-                }
+            "Enqury Details": {  # Source child table name
+                "doctype": "Quotation Item",  # Target child table DocType
+                "postprocess": filter_approved_items,  # Process only approved items
+                "condition": lambda doc: doc.approve  # Only map rows where 'approve' is checked
             }
-        }, target_doc, set_missing_values)
+        },
+        target_doc,
+        set_missing_values
+    )
 
     return target_doc
 

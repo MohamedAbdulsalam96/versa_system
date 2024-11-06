@@ -130,6 +130,10 @@ doc_events = {
    "Sales Order": {
        "on_submit": "versa_system.versa_system.custom_scripts.work_order.create_work_order_from_sales_order"
    },
+   "Final Design": {
+        "on_submit": "versa_system.versa_system.custom_scripts.quotation.update_quotation_final_design_status",
+        "on_update": "versa_system.versa_system.custom_scripts.quotation.update_quotation_final_design_status"
+    }
 }
 # Scheduled Tasks
 # ---------------
@@ -252,5 +256,5 @@ doc_events = {
     "Lead": {
         "before_save": "versa_system.versa_system.custom_scripts.lead.update_lead_status_on_save"
     }
-   
+
 }

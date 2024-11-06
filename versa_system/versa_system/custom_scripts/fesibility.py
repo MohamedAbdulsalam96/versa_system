@@ -1,48 +1,39 @@
 import frappe
 from frappe import _
+import json  # Import json module for parsing
 
-def update_lead_from_feasibility_check(doc, method):
-    """
-    Update the corresponding Lead document when Feasibility Check is updated.
-    """
-    if doc.from_lead:  # Ensure this field correctly references a Lead document
-        lead_doc = frappe.get_doc("Lead", doc.from_lead)
+@frappe.whitelist()
+def update_lead(lead_name, details):
+    # Check if the lead_name and details are provided
+    if not lead_name or not details:
+        frappe.throw(_('Lead name and details must be provided.'))
 
-        # Clear existing entries in Lead's child table if necessary
-        lead_doc.set("custom_enquiry_details", [])  # Clear existing entries
+    # Fetch the Lead document
+    lead = frappe.get_doc('Lead', lead_name)
 
-        # Variable to track if at least one item is approved
-        any_item_approved = False
+    if not lead:
+        frappe.throw(_('Lead not found: {0}').format(lead_name))
 
-        # Loop through each item in the 'details' child table of Feasibility Check
-        for item in doc.details:
-            # Check if the 'approve' checkbox is checked
-            if item.approve:
-                any_item_approved = True  # At least one item is approved
+    # Parse the details string into a Python object
+    try:
+        details = json.loads(details)  # Convert JSON string to Python list
+    except json.JSONDecodeError:
+        frappe.throw(_('Invalid details format. Please provide valid JSON.'))
 
-            # Append new item to Lead's child table
-            lead_doc.append("custom_enquiry_details", {
-                "item": item.item,
-                "brand": item.brand,
-                "rate_range": item.rate_range,
-                "design": item.design,
-                "model": item.model,
-                "size": item.size,
-                "colour": item.colour,
-                "material": item.material,
-                "made_machinehand": item.made_machinehand,
-                "image": item.image,
-                "approve": item.approve
-            })
+    # Clear existing child table entries
+    lead.custom_enquiry_details = []
 
-        # Validate that at least one item is approved
-        if not any_item_approved:
-            frappe.throw(_("At least one item must be approved."))
+    # Update the Lead's child table with new details
+    for row in details:
+        lead.append('custom_enquiry_details', {
+            'item': row.get('item'),
+            'brand': row.get('brand'),
+            'rate_range': row.get('rate_range'),
+            'design': row.get('design'),
+            'model': row.get('model'),
+            'approve': row.get('approve')
+        })
 
-        # Save the updated Lead document
-        try:
-            lead_doc.save()
-            frappe.msgprint(_("Lead updated successfully."))
-        except Exception as e:
-            frappe.log_error(frappe.get_traceback(), "Error Updating Lead")
-            frappe.throw(_("An error occurred while updating the Lead: {0}").format(str(e)))
+    # Save the updated Lead document
+    lead.save()
+    frappe.msgprint(_('Lead {0} updated successfully.').format(lead_name))

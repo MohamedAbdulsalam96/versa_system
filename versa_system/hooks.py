@@ -130,9 +130,6 @@ doc_events = {
    "Sales Order": {
        "on_submit": "versa_system.versa_system.custom_scripts.work_order.create_work_order_from_sales_order"
    },
-   "Feasibility Check": {
-        "on_update": "versa_system.versa_system.custom_scripts.fesibility.update_lead_from_feasibility_check"
-    }
 }
 # Scheduled Tasks
 # ---------------

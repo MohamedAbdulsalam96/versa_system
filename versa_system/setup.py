@@ -63,8 +63,9 @@ def get_quotation_custom_fields():
                 "fieldname": "final_design_approval",
                 "fieldtype": "Data",
                 "label": "Final Design Approval",
-                "insert_after": "order_type",  
-                "reqd": 1
+                "insert_after": "order_type",
+                "reqd": 0,
+                "allow_on_submit": 1
             }
         ]
     }

@@ -132,7 +132,6 @@ doc_events = {
    },
    "Final Design": {
         "on_submit": "versa_system.versa_system.custom_scripts.quotation.update_quotation_final_design_status"
-        # "on_update": "versa_system.versa_system.custom_scripts.quotation.update_quotation_final_design_statu"
     }
 }
 # Scheduled Tasks

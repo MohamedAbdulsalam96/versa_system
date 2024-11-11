@@ -7,7 +7,7 @@ frappe.ui.form.on("Quotation", {
             add_final_design_button(frm); // Add Final Design button
             // Check Final Design status after some delay
             setTimeout(function() {
-                check_final_design_status_and_update_buttons(frm); 
+                check_final_design_status_and_update_buttons(frm);
             }, 10); // Adjust the timeout as needed
         }
     },

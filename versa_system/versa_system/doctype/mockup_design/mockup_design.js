@@ -20,7 +20,6 @@ frappe.ui.form.on('Mockup Design', {
             frm.refresh_field('status'); // Refresh field on UI
         }
     },
-
     approve: function(frm) {
         // Approve the mockup design and update lead status if linked
         if (frm.doc.is_approved) {

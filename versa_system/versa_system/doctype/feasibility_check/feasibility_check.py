@@ -4,7 +4,9 @@ from frappe import _
 from frappe.model.mapper import get_mapped_doc
 
 class FeasibilityCheck(Document):
-    pass
+    def on_update(self):
+        """Update lead status when the feasibility check is updated."""
+        update_lead_status_on_feasibility_check(self)
 
 @frappe.whitelist()
 def map_feasibility_to_mockup_design(source_name, target_doc=None):

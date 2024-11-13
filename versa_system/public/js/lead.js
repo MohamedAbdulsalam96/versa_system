@@ -100,7 +100,10 @@ function update_buttons(frm) {
     );
   } else if (
     frm.doc.status === "Opportunity" ||
-    frm.doc.status === "Feasibility Check Approved"
+    frm.doc.status === "Feasibility Check Approved" ||
+    frm.doc.status === "Converted" ||
+    frm.doc.status === "Quotation" ||
+    frm.doc.status === "Mockup Design Approved"
   ) {
     frm.add_custom_button(
       __("View Feasibility Check"),
@@ -114,7 +117,7 @@ function update_buttons(frm) {
   // Check if the quotation is already saved (not a new record)
   if (
     frm.doc.status === "Feasibility Check Approved" ||
-    frm.doc.status === "Opportunity"
+    frm.doc.status === "Mockup Design Approved"
   ) {
     // Add New Quotation button
     frm.add_custom_button(
@@ -128,19 +131,44 @@ function update_buttons(frm) {
       },
       __("Create")
     );
-
+  } else if (
+    frm.doc.status === "Converted" ||
+    frm.doc.status === "Mockup Design Approved" ||
+    frm.doc.status === "Quotation"
+  ) {
     // Check the status to add the View Quotation button
-    if (
-      frm.doc.status === "Feasibility Check Approved" ||
-      frm.doc.status === "Mockup Design Approved"
-    ) {
-      frm.add_custom_button(
-        __("View Quotation"),
-        function () {
-          open_readonly_document(frm, "Quotation", "party_name");
-        },
-        __("Create")
-      );
-    }
+    frm.add_custom_button(
+      __("View Quotation"),
+      function () {
+        open_readonly_document(frm, "Quotation", "party_name");
+      },
+      __("Create")
+    );
+  }
+
+  if (
+    frm.doc.status === "Converted" ||
+    frm.doc.status === "Mockup Design Approved" ||
+    frm.doc.status === "Quotation"
+  ) {
+    // Add View Mockup Design button
+    frm.add_custom_button(
+      __("View Mockup Design"),
+      function () {
+        open_readonly_document(frm, "Mockup Design", "from_lead");
+      },
+      __("Create")
+    );
+  }
+
+  if (frm.doc.status === "Final Design Approved") {
+    // Add View Mockup Design button
+    frm.add_custom_button(
+      __("View Final Design"),
+      function () {
+        open_readonly_document(frm, "Final Design", "from_lead");
+      },
+      __("Create")
+    );
   }
 }

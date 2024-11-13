@@ -3,6 +3,7 @@
 import frappe
 import frappe
 from frappe.model.document import Document
+from frappe.model.mapper import get_mapped_doc
 
 class MockupDesign(Document):
     def on_update(self):
@@ -16,13 +17,13 @@ def update_lead_status_on_mockup_design(doc):
         try:
             # Fetch the linked lead document
             lead = frappe.get_doc("Lead", doc.from_lead)
-            
+
             # Update status based on workflow state
             if doc.workflow_state == "Approved":
                 lead.status = "Mockup Design Approved"
             elif doc.workflow_state == "Rejected":
                 lead.status = "Mockup Design Rejected"
-            
+
             lead.save()
 
             # Display success message

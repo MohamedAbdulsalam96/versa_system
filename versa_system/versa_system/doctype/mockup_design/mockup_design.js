@@ -17,14 +17,14 @@ frappe.ui.form.on('Mockup Design', {
         // Check if the current status is 'Lead' and update it to 'Feasibility Approved'
         if (frm.doc.status === 'Lead') {
             frm.set_value('status', 'Mockup Design Approved');
-            frm.save(); // Save again to persist the change
+            frm.refresh_field('status'); // Refresh field on UI
         }
     },
-
     approve: function(frm) {
         // Approve the mockup design and update lead status if linked
         if (frm.doc.is_approved) {
-            frm.set_value('status', 'Mockup Design Approved');  // Set mockup design status
+            frm.set_value('status', 'Mockup Design Approved');
+            frm.refresh_field('status'); // Refresh UI before save
 
             // Update the linked lead's status if applicable
             if (frm.doc.from_lead) {
@@ -49,13 +49,14 @@ frappe.ui.form.on('Mockup Design', {
                 });
             }
 
-            frm.save(); // Save the mockup design document after approval
+            frm.save(); // Save the document after status update
         }
     },
 
     reject: function(frm) {
         // Reject the mockup design and update lead status if linked
-        frm.set_value('status', 'Mockup Design Rejected'); // Set mockup design rejection status
+        frm.set_value('status', 'Mockup Design Rejected');
+        frm.refresh_field('status'); // Refresh UI before save
 
         // Update the linked lead's status if applicable
         if (frm.doc.from_lead) {
@@ -65,7 +66,7 @@ frappe.ui.form.on('Mockup Design', {
                     doctype: 'Lead',
                     name: frm.doc.from_lead,
                     fieldname: 'status',
-                    value: 'Mockup Design Rejected', // Set lead status to rejected
+                    value: 'Mockup Design Rejected',
                 },
                 callback: function(response) {
                     if (response && !response.exc) {

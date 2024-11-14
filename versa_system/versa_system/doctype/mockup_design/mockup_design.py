@@ -23,7 +23,13 @@ def update_lead_status_on_mockup_design(doc):
                 lead.status = "Mockup Design Approved"
             elif doc.workflow_state == "Rejected":
                 lead.status = "Mockup Design Rejected"
+            elif doc.workflow_state == "Review Request":
+                lead.status = "On Review"
+            else:
+                # Optional: You could add an else block for other states if needed
+                pass
 
+            # Save the lead document to commit the status change
             lead.save()
 
             # Display success message

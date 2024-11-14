@@ -8,7 +8,7 @@ frappe.ui.form.on("Lead", {
         frm.remove_custom_button("Customer", "Create");
         frm.remove_custom_button("Prospect", "Create");
         frm.remove_custom_button("Opportunity", "Create");
-      }, 10);
+      }, 2);
 
       // Update buttons based on status
       update_buttons(frm);
@@ -86,7 +86,11 @@ function update_buttons(frm) {
   frm.remove_custom_button(__("View Quotation"));
 
   // Check status for feasibility check buttons
-  if (frm.doc.status === "Lead" || frm.doc.status === "Interested") {
+  if (
+    frm.doc.status === "Lead" ||
+    frm.doc.status === "Interested" ||
+    frm.doc.status === "Feasibility Check Rejected"
+  ) {
     frm.add_custom_button(
       __("Feasibility Check"),
       function () {
@@ -103,7 +107,8 @@ function update_buttons(frm) {
     frm.doc.status === "Feasibility Check Approved" ||
     frm.doc.status === "Converted" ||
     frm.doc.status === "Quotation" ||
-    frm.doc.status === "Mockup Design Approved"
+    frm.doc.status === "Mockup Design Approved" ||
+    frm.doc.status === "Mockup Design Rejected"
   ) {
     frm.add_custom_button(
       __("View Feasibility Check"),
@@ -117,7 +122,8 @@ function update_buttons(frm) {
   // Check if the quotation is already saved (not a new record)
   if (
     frm.doc.status === "Feasibility Check Approved" ||
-    frm.doc.status === "Mockup Design Approved"
+    frm.doc.status === "Mockup Design Approved" ||
+    frm.doc.status === "Converted"
   ) {
     // Add New Quotation button
     frm.add_custom_button(
@@ -134,11 +140,23 @@ function update_buttons(frm) {
   } else if (
     frm.doc.status === "Converted" ||
     frm.doc.status === "Mockup Design Approved" ||
-    frm.doc.status === "Quotation"
+    frm.doc.status === "Quotation" ||
+    frm.doc.status === "Final Design Approved" ||
+    frm.doc.status === "Final Design Rejected" ||
+    frm.doc.status === "Quotation Rejected"
   ) {
     // Check the status to add the View Quotation button
     frm.add_custom_button(
       __("View Quotation"),
+      function () {
+        open_readonly_document(frm, "Quotation", "party_name");
+      },
+      __("Create")
+    );
+  } else if (frm.doc.status === "Lost Quotation") {
+    // Check the status to add the View Quotation button
+    frm.add_custom_button(
+      __("Lost Quotation"),
       function () {
         open_readonly_document(frm, "Quotation", "party_name");
       },
@@ -149,7 +167,10 @@ function update_buttons(frm) {
   if (
     frm.doc.status === "Converted" ||
     frm.doc.status === "Mockup Design Approved" ||
-    frm.doc.status === "Quotation"
+    frm.doc.status === "Quotation" ||
+    frm.doc.status === "Final Design Approved" ||
+    frm.doc.status === "Final Design Rejected" ||
+    frm.doc.status === "On Review"
   ) {
     // Add View Mockup Design button
     frm.add_custom_button(

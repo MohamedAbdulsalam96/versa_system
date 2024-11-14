@@ -8,7 +8,10 @@ frappe.ui.form.on("Quotation", {
             // Check Final Design status after some delay
             setTimeout(function() {
                 check_final_design_status_and_update_buttons(frm);
-            }, 10); // Adjust the timeout as needed
+            }, 100); // Adjust the timeout as needed
+        }else {
+            // Hide the "Create" button if the Quotation is not approved
+            frm.page.hide_menu_item("Create");
         }
     },
 });

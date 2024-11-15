@@ -113,3 +113,17 @@ def create_property_setters(property_setter_datas):
             property_setter.insert()
         except Exception as e:
             frappe.log_error(f"Error creating property setter for {data['doc_type']} - {data['field_name']}: {str(e)}")
+def get_property_setters():
+    """
+    Define specific property setters that need to be added to the Sales Order DocType only.
+    """
+    return [
+        {
+            "doctype_or_field": "DocField",
+            "doc_type": "Lead",
+            "field_name": "status",
+            "property": "options",
+            "value": "Lead\n Open\nOpportunity\nQuotation\nLost Quotation\nInterested\nFeasibility Check Approved\nConverted\nFeasibility Check Rejected\nMockup Design Approved\nMockup Design Rejected\nOn Review\nQuotation Rejected"
+        },
+       
+    ]

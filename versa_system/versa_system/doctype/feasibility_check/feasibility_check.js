@@ -103,23 +103,7 @@ function update_lead_from_feasibility_check(frm) {
       lead_name: frm.doc.from_lead,
       details: JSON.stringify(details), // Ensure details are sent as JSON string
     },
-    callback: function (response) {
-      if (response.message && !messageDisplayed) {
-        frappe.msgprint(__("Lead updated successfully."));
-        messageDisplayed = true; // Set flag to true after displaying the message
-      } else if (!response.message && !messageDisplayed) {
-        frappe.msgprint(__("Error occurred while updating the Lead."));
-        messageDisplayed = true;
-      }
-    },
-    error: function (error) {
-      if (!messageDisplayed) {
-        frappe.msgprint(
-          __("Error occurred while updating the Lead: ") + error.message
-        );
-        messageDisplayed = true;
-      }
-    },
+    
   });
 }
 

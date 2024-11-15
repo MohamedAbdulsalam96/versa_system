@@ -90,7 +90,7 @@
   "doctype": "Workflow",
   "document_type": "Mockup Design",
   "is_active": 1,
-  "modified": "2024-09-18 10:31:40.087998",
+  "modified": "2024-11-14 15:57:58.832182",
   "name": "Mockup Design",
   "override_status": 0,
   "send_email_alert": 0,
@@ -139,6 +139,21 @@
     "update_field": null,
     "update_value": null,
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "Customer",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Mockup Design",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "state": "Review Request",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -171,11 +186,23 @@
     "allow_self_approval": 1,
     "allowed": "Customer",
     "condition": null,
-    "next_state": "Pending",
+    "next_state": "Review Request",
     "parent": "Mockup Design",
     "parentfield": "transitions",
     "parenttype": "Workflow",
     "state": "Pending",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Sent to Customer",
+    "allow_self_approval": 1,
+    "allowed": "Manufacturing User",
+    "condition": null,
+    "next_state": "Pending",
+    "parent": "Mockup Design",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "state": "Review Request",
     "workflow_builder_id": null
    }
   ],

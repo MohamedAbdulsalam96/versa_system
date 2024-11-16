@@ -123,7 +123,7 @@ def get_property_setters():
             "doc_type": "Lead",
             "field_name": "status",
             "property": "options",
-            "value": "Lead\n Open\nOpportunity\nQuotation\nLost Quotation\nInterested\nFeasibility Check Approved\nConverted\nFeasibility Check Rejected\nMockup Design Approved\nMockup Design Rejected\nOn Review\nQuotation Rejected"
+            "value": "Lead\n Open\nQuotation\nLost Quotation\nInterested\nFeasibility Check Approved\nConverted\nFeasibility Check Rejected\nMockup Design Approved\nMockup Design Rejected\nOn Review\nQuotation Rejected"
         },
        
     ]

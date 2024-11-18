@@ -60,28 +60,16 @@ function check_final_design_status_and_update_buttons(frm) {
             },
             callback: function (response) {
                 if (response.message === "Approved") {
-                    // Set the Final Design Status field to 'Approved'
-                    frm.set_value('final_design_approval', 'Approved'); // Replace with the actual field name
-
-                    // If Final Design is approved, remove the "Final Design" button and add "Sales Order" button
                     frm.remove_custom_button(__("Final Design"), "Create");
                     add_sales_order_button(frm);
-                    console.log("Final Design is approved. Sales Order button is now shown.");
-                } else {
-                    // Set the Final Design Status field to 'Not Approved'
-                    frm.set_value('final_design_approval', 'Not Approved'); // Replace with the actual field name
 
-                    // If Final Design is not approved, remove the "Sales Order" button and add the "Final Design" button
+                } else {
                     frm.remove_custom_button(__("Sales Order"), "Create");
                     add_final_design_button(frm);
-                    console.log("Final Design is not approved.");
+
                 }
             },
-            error: function (error) {
-                console.error("Error checking Final Design status:", error);
-            }
+
         });
-    } else {
-        console.log("No party_name (from_lead) found.");
     }
 }

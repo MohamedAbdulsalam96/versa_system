@@ -131,7 +131,7 @@ doc_events = {
        "on_submit": "versa_system.versa_system.custom_scripts.work_order.create_work_order_from_sales_order"
    },
    "Final Design": {
-        "on_submit": "versa_system.versa_system.custom_scripts.quotation.update_quotation_final_design_status"
+        "on_submit": "versa_system.versa_system.custom_scripts.quotation.check_final_design_status"
     }
 }
 # Scheduled Tasks

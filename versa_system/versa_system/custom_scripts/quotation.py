@@ -75,8 +75,16 @@ def check_final_design_status(party_name):
         filters={"from_lead": party_name, "workflow_state": "Approved"},
         fields=["name"]
     )
-
-    if final_design:
-        return "Approved"
-    else:
-        return "Not Approved"
+    quotation_name = frappe.get_value("Quotation", {"party_name": party_name}, "name")
+    if quotation_name:
+        quotation_doc = frappe.get_doc("Quotation", quotation_name)
+        if final_design:
+            if quotation_doc.final_design_approval != "Approved":
+                quotation_doc.final_design_approval = "Approved"
+                quotation_doc.save()
+            return "Approved"
+        else:
+            if quotation_doc.final_design_approval != "Not Approved":
+                quotation_doc.final_design_approval = "Not Approved"
+                quotation_doc.save()
+            return "Not Approved"

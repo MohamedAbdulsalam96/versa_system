@@ -120,3 +120,18 @@ function updateAndNavigateToLead(frm) {
     frappe.set_route("Form", "Lead", frm.doc.from_lead);
   });
 }
+frappe.ui.form.on('Feasibility Check', {
+    select_all: function (frm) {
+        if (frm.doc.select_all) {
+            // Loop through all rows in the Details child table
+            frm.doc.details.forEach(row => {
+                frappe.model.set_value(row.doctype, row.name, 'approve', 1); // Check the Approve column
+            });
+        } else {
+            // Uncheck the Approve column when Select All is unchecked
+            frm.doc.details.forEach(row => {
+                frappe.model.set_value(row.doctype, row.name, 'approve', 0); // Uncheck the Approve column
+            });
+        }
+    }
+});

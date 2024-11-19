@@ -105,19 +105,13 @@ def create_property_setters(property_setter_datas):
     """
     for data in property_setter_datas:
         if data["doc_type"] == "Lead" and data["field_name"] == "status":
-            print(data)
         property_setter_exist = frappe.db.exists("Property Setter", {
             "doc_type": data["doc_type"],
             "field_name": data["field_name"],
             "property": data["property"]
         })
-        # Check if the property setter already exists
         if property_setter_exist:
-            print("exist deletion")
             frappe.db.delete("Property Setter", property_setter_exist)
-
-        print("new")
-        # Create the Property Setter
         property_setter = frappe.new_doc("Property Setter")
         property_setter.update(data)
         property_setter.flags.ignore_permissions = True

@@ -10,6 +10,7 @@
   "from_lead",
   "section_break_xldq",
   "lead_details",
+  "previous_details",
   "amended_from"
  ],
  "fields": [
@@ -34,6 +35,12 @@
    "options": "Enqury Details"
   },
   {
+   "fieldname": "previous_details",
+   "fieldtype": "Table",
+   "label": "Previous Details",
+   "options": "Mockup Details"
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -48,7 +55,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 10,
- "modified": "2024-10-29 10:12:06.312968",
+ "modified": "2024-11-19 12:51:39.712283",
  "modified_by": "Administrator",
  "module": "Versa System",
  "name": "Mockup Design",

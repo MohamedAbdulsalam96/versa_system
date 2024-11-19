@@ -13,6 +13,17 @@ frappe.ui.form.on("Feasibility Check", {
       // Call the function to update the Lead and add the navigation button
       updateAndNavigateToLead(frm);
     }
+    // Fetch the status of the related Mockup Design
+    frappe.db.get_value(
+      "Mockup Design",
+      { from_lead: frm.doc.from_lead }, // Filter by the specific 'from_lead' value
+      "workflow_state",
+      function (value) {
+        if (value && value.workflow_state === "Approved") {
+          frm.remove_custom_button(__("Mockup Design"));
+        }
+      }
+    );
   },
 
   after_save: function (frm) {
@@ -20,6 +31,18 @@ frappe.ui.form.on("Feasibility Check", {
     if (frm.doc.status === "Lead") {
       frm.set_value("status", "Interest");
       frm.save(); // Save again to persist the change
+    }
+  },
+
+  validate: function (frm) {
+    // Ensure at least one row in the child table is approved
+    const isApproved = frm.doc.details.some((row) => row.approve);
+    if (!isApproved) {
+      frappe.throw(
+        __(
+          "At least one row in the details table must be approved before saving."
+        )
+      );
     }
   },
 
@@ -103,7 +126,6 @@ function update_lead_from_feasibility_check(frm) {
       lead_name: frm.doc.from_lead,
       details: JSON.stringify(details), // Ensure details are sent as JSON string
     },
-    
   });
 }
 

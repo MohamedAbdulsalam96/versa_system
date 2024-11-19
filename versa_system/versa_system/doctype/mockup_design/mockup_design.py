@@ -1,15 +1,21 @@
-# Copyright (c) 2024, efeone and contributors
-# For license information, please see license.txt
-import frappe
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 
 class MockupDesign(Document):
+    def validate(self):
+        # Ensure each row in lead_details table has an image
+        self.check_image_field_in_lead_details()
+
     def on_update(self):
         # Call the function to update lead status when the document is updated
         update_lead_status_on_mockup_design(self)
 
+    def check_image_field_in_lead_details(self):
+        """Ensure each row in the Lead Details table has an image before saving."""
+        for row in self.get("lead_details"):
+            if not row.image:
+                frappe.throw(f"Please add an image in row {row.idx} of the Lead Details table.")
 
 def update_lead_status_on_mockup_design(doc):
     """Update the status of the associated lead when the mockup design is approved or rejected."""

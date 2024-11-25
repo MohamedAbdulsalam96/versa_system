@@ -94,9 +94,6 @@ function updateAndNavigateToLead(frm) {
     if (!frm.doc.from_lead) {
       frappe.msgprint(__("Please select a Lead before proceeding."));
       return;
-    callback: function(response) {
-      if (response.message) {
-      }
     }
   });
 }

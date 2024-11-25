@@ -46,65 +46,21 @@ frappe.ui.form.on("Feasibility Check", {
     }
   },
 
-  approve: function (frm) {
-    // Approve the feasibility and update lead status if linked
-    if (frm.doc.is_approved) {
-      frm.set_value("status", "Feasibility Approved"); // Set feasibility status
 
-      if (frm.doc.from_lead) {
-        frappe.call({
-          method: "frappe.client.set_value",
-          args: {
-            doctype: "Lead",
-            name: frm.doc.from_lead,
-            fieldname: "status",
-            value: "Feasibility Check Approved",
-          },
-          callback: function (response) {
-            if (response && !response.exc) {
-              frappe.msgprint(
-                `Lead ${frm.doc.from_lead} status updated to 'Feasibility Check Approved'.`,
-                "Status Updated"
-              );
-            } else {
-              frappe.msgprint(__("Failed to update Lead status."));
-            }
-          },
-        });
-      }
-
-      frm.save(); // Save the feasibility document after approval
-    }
-  },
-
-  reject: function (frm) {
-    // Reject the feasibility and update lead status if linked
-    frm.set_value("status", "Feasibility Rejected"); // Adjust rejection status
-
-    if (frm.doc.from_lead) {
-      frappe.call({
-        method: "frappe.client.set_value",
-        args: {
-          doctype: "Lead",
-          name: frm.doc.from_lead,
-          fieldname: "status",
-          value: "Feasibility Check Rejected", // Set lead status to rejected
-        },
-        callback: function (response) {
-          if (response && !response.exc) {
-            frappe.msgprint(
-              `Lead ${frm.doc.from_lead} status updated to 'Feasibility Check Rejected'.`,
-              "Status Updated"
-            );
-          } else {
-            frappe.msgprint(__("Failed to update Lead status."));
-          }
-        },
+  // Function to update the Lead with table data from Feasibility Check
+  select_all: function (frm) {
+    if (frm.doc.select_all) {
+      // Loop through all rows in the Details child table
+      frm.doc.details.forEach(row => {
+        frappe.model.set_value(row.doctype, row.name, 'approve', 1); // Check the Approve column
+      });
+    } else {
+      // Uncheck the Approve column when Select All is unchecked
+      frm.doc.details.forEach(row => {
+        frappe.model.set_value(row.doctype, row.name, 'approve', 0); // Uncheck the Approve column
       });
     }
-
-    frm.save(); // Save the document to persist the rejection
-  },
+  }
 });
 
 // Function to update the Lead with table data from Feasibility Check
@@ -138,22 +94,32 @@ function updateAndNavigateToLead(frm) {
     if (!frm.doc.from_lead) {
       frappe.msgprint(__("Please select a Lead before proceeding."));
       return;
+    callback: function(response) {
+      if (response.message) {
+      }
     }
-    frappe.set_route("Form", "Lead", frm.doc.from_lead);
   });
 }
+
+// Check if the workflow state is "Approved" or "Rejected"
 frappe.ui.form.on('Feasibility Check', {
-    select_all: function (frm) {
-        if (frm.doc.select_all) {
-            // Loop through all rows in the Details child table
-            frm.doc.details.forEach(row => {
-                frappe.model.set_value(row.doctype, row.name, 'approve', 1); // Check the Approve column
-            });
-        } else {
-            // Uncheck the Approve column when Select All is unchecked
-            frm.doc.details.forEach(row => {
-                frappe.model.set_value(row.doctype, row.name, 'approve', 0); // Uncheck the Approve column
-            });
+  refresh: function(frm) {
+    if (frm.doc.workflow_state === "Approved" || frm.doc.workflow_state === "Rejected") {
+      // Add the "Go to Lead" button only if the state is approved or rejected
+      frm.add_custom_button(__("Go to Lead"), function () {
+        if (!frm.doc.from_lead) {
+          return;
         }
+        frappe.set_route("Form", "Lead", frm.doc.from_lead);
+      });
     }
+  }
 });
+
+// Function to update the Lead and navigate
+function updateAndNavigateToLead(frm) {
+  if (frm.doc.from_lead) {
+    // Call the function to update the Lead from Feasibility Check
+    update_lead_from_feasibility_check(frm);
+  }
+}

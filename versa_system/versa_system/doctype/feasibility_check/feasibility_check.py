@@ -41,8 +41,8 @@ def map_feasibility_to_mockup_design(source_name, target_doc=None):
                 "doctype": "Mockup Design",
                 "field_map": {}
             },
-            "Enqury Details": {  # Ensure this matches the target child table name
-                "doctype": "Enqury Details",  # Corrected spelling
+            "Enquiry Details": {  # Ensure this matches the target child table name
+                "doctype": "Enquiry Details",  # Corrected spelling
                 "postprocess": filter_approved_items,  # Process only approved items
                 "condition": lambda doc: doc.approve  # Only map rows where 'approve' is checked
             }
@@ -53,29 +53,16 @@ def map_feasibility_to_mockup_design(source_name, target_doc=None):
 
     return target_doc
 
-
 def update_lead_status_on_feasibility_check(doc):
     """Update the status of the associated lead when the feasibility check is approved or rejected."""
     if doc.from_lead:
-        try:
-            # Fetch the linked lead document
-            lead = frappe.get_doc("Lead", doc.from_lead)
-            
-            # Update status based on workflow state
-            if doc.workflow_state == "Approved":
-                lead.status = "Feasibility Check Approved"
-            elif doc.workflow_state == "Rejected":
-                lead.status = "Feasibility Check Rejected"
-            
-            lead.save()
+        # Fetch the linked lead document
+        lead = frappe.get_doc("Lead", doc.from_lead)
 
-            # Display success message
-            frappe.msgprint(
-                f"Lead {lead.name} status updated to '{lead.status}'.",
-                alert=True
-            )
-        except frappe.DoesNotExistError:
-            frappe.throw(f"The lead {doc.from_lead} does not exist.")
-        except Exception as e:
-            frappe.log_error(f"Failed to update lead status: {str(e)}")
-            frappe.throw("An error occurred while updating the lead status.")
+        # Update status based on workflow state
+        if doc.workflow_state == "Approved":
+            lead.status = "Feasibility Check Approved"  # Correct status
+        elif doc.workflow_state == "Rejected":
+            lead.status = "Feasibility Check Rejected"  # Correct status
+
+        lead.save()

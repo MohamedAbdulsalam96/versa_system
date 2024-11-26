@@ -19,13 +19,5 @@ frappe.ui.form.on('Mockup Design', {
                 });
             }, __('Create'));
         }
-    },
-
-    after_save: function (frm) {
-        // Update the status to 'Opportunity' if it matches 'Feasibility Check Approved'
-        if (frm.doc.status === 'Feasibility Check Approved') {
-            frm.set_value('status', 'Opportunity');
-            frm.save(); // Save the document to persist the updated status
-        }
-    }
+    }  
 });
